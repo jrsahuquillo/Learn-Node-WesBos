@@ -14,10 +14,8 @@ body {
 
 .inner {
   max-width: 900px;
-  margin: 0 auto; }
-  @media all and (max-width: 900px) {
-    .inner {
-      padding: 2rem; } }
+  margin: 0 auto;
+  padding: 2rem; }
 
 html {
   box-sizing: border-box; }
@@ -1106,7 +1104,8 @@ label {
   background: #FFC40E;
   color: #303030;
   font-family: 'Panama';
-  font-weight: 600; }
+  font-weight: 600;
+  margin-top: 2rem; }
 
 .avatar {
   min-width: 50px;
