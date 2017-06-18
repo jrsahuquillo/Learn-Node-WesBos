@@ -19,7 +19,7 @@ function typeAhead(search) {
 
   searchInput.on('input', function() {
     // if there is no value, quit it!
-    if(!this.value) {
+    if (!this.value) {
       searchResults.style.display = 'none';
       return; //stop!
     }
@@ -28,18 +28,18 @@ function typeAhead(search) {
     searchResults.style.display = 'block';
 
     axios
-      .get(`api/search?q=${this.value}`)
+      .get(`/api/search?q=${this.value}`)
       .then(res => {
-        if(res.data.length) {
+        if (res.data.length) {
           searchResults.innerHTML = dompurify.sanitize(searchResultsHTML(res.data));
           return;
         }
-        // tell theme nothing come back
-        searchResults.innerHTML = dompurify.sanitize(`<div class="search__result">No results for ${this.value} found!</div>`);
+        // tell theme nothing came back
+        searchResults.innerHTML = dompurify.sanitize(`<div class="search__result">No results for ${this.value}</div>`);
       })
       .catch(err => {
         console.error(err);
-      })
+      });
   });
 
   //Handle keyboard inputs
@@ -70,7 +70,7 @@ function typeAhead(search) {
     next.classList.add(activeClass);
   });
 
-};
+}
 
 
 export default typeAhead;
