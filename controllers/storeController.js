@@ -52,9 +52,28 @@ exports.createStore = async (req, res) => {
 };
 
 exports.getStores = async (req, res) => {
+  const page = req.params.page || 1;
+  const limit = 4;
+  const skip = (page * limit) - limit;
   //1.Query the database for a list of all stores
-  const stores = await Store.find();
-  res.render('stores', {title: 'Stores', stores});
+  const storesPromise = Store
+    .find()
+    .skip(skip)
+    .limit(limit)
+    .sort({ created: 'desc' });
+
+  const countPromise = Store.count();
+
+  const[stores, count] = await Promise.all([storesPromise, countPromise]);
+
+  const pages = Math.ceil(count / limit);
+  if(!stores.length && skip) {
+    req.flash('info', `Hey! Yo asked for page ${page}. But that doesn't exist. Soy I put you on page ${pages}`);
+    res.redirect(`/stores/page/${pages}`);
+    return;
+  }
+
+  res.render('stores', {title: 'Stores', stores, page, pages, count });
 };
 
 const confirmOwner = (store, user) => {
@@ -74,7 +93,6 @@ exports.editStore = async (req, res) => {
 
 exports.updateStore = async (req, res) => {
   //set the location data to be a point
-  lngInput.value = place.geometry.location.lng();
   req.body.location.type = "Point";
   //find and update store
   const store = await Store.findOneAndUpdate({ _id: req.params.id}, req.body, {
@@ -136,7 +154,7 @@ exports.mapStores = async (req, res) => {
 
   }
 
-  const stores = await Store.find(q).select('slug name description location photo').limit(10);
+  const stores = await Store.find(q).select('slug name description location photo').limit(20);
   res.json(stores);
 };
 
