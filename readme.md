@@ -27,3 +27,4 @@ That will populate 16 stores with 3 authors and 41 reviews. The logins for the a
 Deployed App:
 
 Now: https://wesbos-app-learn-node-ynbabzzdrz.now.sh/
+Heroku: https://wesbos-app-learn-nodejs.herokuapp.com
